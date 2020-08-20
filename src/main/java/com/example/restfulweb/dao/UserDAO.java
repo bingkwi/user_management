@@ -45,20 +45,19 @@ public class UserDAO {
 	public User findByUsername(String username) throws SQLException {
 		String findByName = "SELECT * FROM user WHERE username = " + "\"" + username + "\"" + ";";
 		ResultSet rs = connector.connection().executeQuery(findByName);
-		
-		rs.next(); 
+		if (rs.next()) { 
 			int id = rs.getInt("id");
 			String password = rs.getString("password");
 			String salt = rs.getString("salt");
 			Timestamp created = rs.getTimestamp("time_created");	
 			User user = new User(id, username, password, salt, created);
 //			System.out.println("name");
-			
-		
 		return user;
+		} else {
+			return null;
+		}
 	}
 	
-
 	public User insertUser(User user) throws SQLException {
 		String insertUser = "INSERT INTO user (username, password, salt, time_created)" + 
 							"VALUES(" 
@@ -67,8 +66,8 @@ public class UserDAO {
 							+ "\"" + user.getSalt() + "\"" + ", " 
 							+ "\"" + user.getCreated() + "\"" + ");";
 		connector.connection().executeUpdate(insertUser);
-//		System.out.println(insertUser); 
-		return user;
+//		System.out.println(); 
+		return findByUsername(user.getUsername());	
 	}
 
 	public void deleteUser(int id) throws SQLException {
@@ -88,15 +87,16 @@ public class UserDAO {
 		Timestamp timestamp = new Timestamp(milli);
 		return timestamp;
 	}
-
+	
+	
 	public static void main(String[] args) throws SQLException, ParseException {
 		UserDAO userDAO = new UserDAO();
 
-		User user = new User("user03", "16565", "26565", parseTime("2020/05/01 20:50:22.0"));
+		User user = new User("user023", "16565", "26565", parseTime("2020/05/01 20:50:22.0"));
 //		User userFindAll = userDAO.findAll();
-		User userFindName = userDAO.findByUsername("user03");
-		System.out.println(userFindName);
-//		userDAO.insertUser(user);
+//		User userFindName = userDAO.findByUsername("user03");
+//		System.out.println(userFindName);
+		userDAO.insertUser(user);
 		userDAO.deleteUser(2);
 		
 	}

@@ -1,6 +1,5 @@
 package com.example.restfulweb.models;
-
-import java.sql.Date;
+ 	
 import java.sql.Timestamp;
 
 public class User {
@@ -24,6 +23,10 @@ public class User {
         this.password = password;
         this.salt = salt;
         this.created = created;
+    }
+    
+    public User() {
+    	super();
     }
 
     public int getId(){
