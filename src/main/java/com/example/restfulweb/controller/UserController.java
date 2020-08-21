@@ -59,9 +59,9 @@ public class UserController {
 		}	
 	}
 	
-	@DeleteMapping("/session")
-	public void logout() {
-//		blackList
-		
+	@DeleteMapping("/session/{token}")
+	public String logout(@PathVariable("token") String token) {
+		 UserJwtUtil.putTokenToBlacklist(token);	
+		 return "OK";
 	}
 }
